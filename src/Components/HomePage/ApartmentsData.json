@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "COMMUNITIES 360° TOUR",
+    "location": "Bangalore",
+    "price": "$1,200,000",
+    "status": "Available",
+    "button": "Know More",
+    "images": [
+      "https://cdnassets.hw.net/04/2c/967deff449bd8a24c5fbb96dccd2/6474f8a03a894163ac235432988b491f.png"
+    ],
+    "type": "Apartments",
+    "bed": 3,
+    "bath": 2,
+    "sqft": 1500,
+    "buildername": "casagrand",
+    "kitchen": 1,
+    "address": "123 Main St",
+    "title": "Modern Downtown Apartment"
+    
+  },
+  
+  {
+    "id": 2,
+    "name": "INTERNATIONAL PROJECTS",
+    "location": "Hyderabad",
+    "price": "$3,500,000",
+    "status": "Sold",
+    "button": "Know More",
+    "images": [
+      "https://wallup.net/wp-content/uploads/2019/09/760308-apartment-condo-interior-design-house-building-architecture-2-748x568.jpg"
+    ],
+    "type": "Villas",
+    "bed": 3,
+    "bath": 2,
+    "sqft": 1500,
+    "buildername": "radient",
+    "kitchen": 2,
+    "address": "123 Main St",
+    "title": "Modern Downtown Apartment"
+  },
+  {
+    "id": 3,
+    "name": "DISCOVER OUR BLOGS",
+    "location": "Chennai",
+    "price": "$850,000",
+    "status": "Available",
+    "button": "Know More",
+    "images": [
+      "https://cdnassets.hw.net/04/2c/967deff449bd8a24c5fbb96dccd2/6474f8a03a894163ac235432988b491f.png"
+    ],
+    "type": "Plots",
+    "bed": 3,
+    "bath": 2,
+    "sqft": 1500,
+    "buildername": "relator",
+    "kitchen": 3,
+    "address": "123 Main St",
+    "title": "Modern Downtown Apartment"
+  }
+  
+]
