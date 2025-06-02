@@ -7,16 +7,21 @@ import slide2 from "../HomePage/Assets/slide2.webp";
 import slide3 from "../HomePage/Assets/slide3.webp";
 import slide4 from "../HomePage/Assets/slide4.webp";
 import highlightsline from "../BuilderInnerPage/Assets/highlightsline.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const images = [slide1, slide2, slide3, slide4];
 
-const PropertyHighlights = () => {
+const PropertyHighlights = ({
+  scrollToApartments,
+  scrollToIndividualHouse,
+  scrollToTopProjects,
+}) => {
   const [activeTab, setActiveTab] = useState("BUY");
   const [location, setLocation] = useState("Chennai");
   const [propertyType, setPropertyType] = useState("Apartment");
   const [priceRange, setPriceRange] = useState("2Cr-5Cr");
   const [currentImage, setCurrentImage] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -35,34 +40,32 @@ const PropertyHighlights = () => {
       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
 
       {/* Navbar */}
-  <div className="absolute top-5 left-1/2 transform -translate-x-1/2 hidden md:flex w-[100%] max-w-7xl items-center text-white font-semibold text-sm lg:text-base">
-      <>
-      </>
-    <div className="flex flex-1 justify-center space-x-6 lg:space-x-10">
-    <h1 className="cursor-pointer flex-shrink-0">Apartments</h1>
-    <h1 className="cursor-pointer">Individual House</h1>
-    <h1 className="cursor-pointer">Ongoing products</h1>
-    <h1 className="cursor-pointer">Contact Us</h1>
-    <h1 className="cursor-pointer">Blogs</h1>
-  </div>
-<div className="flex space-x-3">
-  {/* <button className="px-4 py-2 bg-white text-black rounded hover:bg-blue-700 hover:text-white transition">
-    Sign Up
-  </button> */}<></>
-
-  <Link to="/login">
-    <button className="px-4 py-2 bg-white text-black rounded hover:bg-blue-700 hover:text-white transition">
-      Get Started
-    </button>
-  </Link>
-</div>
-</div>
-
-
-
-
-
-
+      <div className="absolute top-5 left-1/2 transform -translate-x-1/2 hidden md:flex w-[100%] max-w-7xl items-center text-white font-semibold text-sm lg:text-base">
+        <div className="flex flex-1 justify-center space-x-6 lg:space-x-10">
+          <h1
+            onClick={scrollToApartments}
+            className="cursor-pointer flex-shrink-0"
+          >
+            Apartments
+          </h1>
+          <h1 onClick={scrollToTopProjects} className="cursor-pointer">
+            Ongoing Projects
+          </h1>
+          <h1 onClick={scrollToIndividualHouse} className="cursor-pointer">
+            Individual House
+          </h1>
+          <h1 onClick={() => navigate("/contact")} className="cursor-pointer">
+            Contact Us
+          </h1>
+        </div>
+        <div className="flex space-x-3">
+          <Link to="/login">
+            <button className="px-4 py-2 bg-white text-black rounded hover:bg-blue-700 hover:text-white transition">
+              Get Started
+            </button>
+          </Link>
+        </div>
+      </div>
 
       {/* Logo */}
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 md:top-10 md:left-16 bg-white p-2 sm:p-3 rounded-md shadow-lg">
@@ -78,9 +81,12 @@ const PropertyHighlights = () => {
         <h1 className="text-xl sm:text-3xl md:text-4xl font-bold leading-snug">
           Casagrand Avenuepark <br /> highlight
         </h1>
-        {/* <button className="mt-4 px-4 py-2 md:px-6 md:py-2 border-2 border-white text-white font-medium rounded-md hover:bg-white hover:text-black transition">
-          Explore properties
-        </button> */}
+        {/* <button
+  className="mt-4 px-4 py-2 md:px-6 md:py-2 border-2 border-white text-white font-medium rounded-md hover:bg-white hover:text-black transition"
+>
+  Explore properties
+</button> */}
+
         <img src={highlightsline} alt="" className="mt-6 h-1 sm:mt-8" />
       </div>
 

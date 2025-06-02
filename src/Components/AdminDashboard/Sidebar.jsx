@@ -15,6 +15,11 @@ const navItems = [
   { icon: sidebar1, label: "Dashboard", link: "/admin" },
   { icon: sidebar2, label: "Properties", link: "/propertiespage" },
   { icon: sidebar3, label: "Leads", link: "/leadspage" },
+  {
+    icon: sidebar6,
+    label: "leadsmanagement",
+    link: "/leadsdeatils",
+  },
   { icon: sidebar6, label: "Brokers & External Agents", link: "/agentpage" },
   { icon: sidebar6, label: "usermanagement", link: "/UserManagement" },
 ];
@@ -31,7 +36,13 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
+    // Clear authentication tokens
+    localStorage.clear();
+    
+    // Clear session storage (specific item or all)
+     sessionStorage.clear();
+    
+    // Redirect to login page
     navigate("/login");
   };
 
@@ -52,7 +63,7 @@ const Sidebar = () => {
                 key={idx}
                 onClick={() => {
                   navigate(link);
-                  setIsOpen(false); // close on mobile
+                  setIsOpen(false);
                 }}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer group transition duration-200 ${
                   isActive

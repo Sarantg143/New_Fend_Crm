@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   MoreVertical,
@@ -52,19 +52,19 @@ const LeadsPage = () => {
   const [units, setUnits] = useState([]);
 
   useEffect(() => {
-  const fetchUnits = async () => {
-    try {
-      const response = await axios.get(
-        "https://crm-bcgg.onrender.com/api/properties/units"
-      );
-      setUnits(response.data);
-    } catch (error) {
-      console.error("Error fetching units:", error);
-    }
-  };
+    const fetchUnits = async () => {
+      try {
+        const response = await axios.get(
+          "https://crm-bcgg.onrender.com/api/properties/units"
+        );
+        setUnits(response.data);
+      } catch (error) {
+        console.error("Error fetching units:", error);
+      }
+    };
 
-  fetchUnits();
-}, []);
+    fetchUnits();
+  }, []);
 
   const [newLead, setNewLead] = useState({
     name: "",
@@ -80,58 +80,58 @@ const LeadsPage = () => {
     assignedTo: "",
     notes: [],
     createdAt: "",
+    avatar: "",
   });
-useEffect(() => {
-  const fetchInitialData = async () => {
-    try {
-      const [builderRes, unitRes] = await Promise.all([
-        axios.get("https://crm-bcgg.onrender.com/api/properties/builder-profile"),
-        axios.get("https://crm-bcgg.onrender.com/api/properties/units"),
-      ]);
-      setBuilders(builderRes.data);
-      setUnits(unitRes.data);
-    } catch (err) {
-      console.error("Initial fetch error", err);
-    }
-  };
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const [builderRes, unitRes] = await Promise.all([
+          axios.get(
+            "https://crm-bcgg.onrender.com/api/properties/builder-profile"
+          ),
+          axios.get("https://crm-bcgg.onrender.com/api/properties/units"),
+        ]);
+        setBuilders(builderRes.data);
+        setUnits(unitRes.data);
+      } catch (err) {
+        console.error("Initial fetch error", err);
+      }
+    };
 
-  fetchInitialData();
-}, []);
+    fetchInitialData();
+  }, []);
 
+  const handleInterestedInChange = async (e) => {
+    const { name, value } = e.target;
 
-const handleInterestedInChange = async (e) => {
-  const { name, value } = e.target;
-
-  if (name === "builder") {
-    try {
-      const res = await axios.get(
-        `https://crm-bcgg.onrender.com/api/properties/projects/by-builder/${value}`
-      );
-      setProjects(res.data);
+    if (name === "builder") {
+      try {
+        const res = await axios.get(
+          `https://crm-bcgg.onrender.com/api/properties/projects/by-builder/${value}`
+        );
+        setProjects(res.data);
+        setNewLead((prev) => ({
+          ...prev,
+          interestedIn: {
+            ...prev.interestedIn,
+            builder: value,
+            project: "",
+            unit: "",
+          },
+        }));
+      } catch (err) {
+        console.error("Error fetching projects", err);
+      }
+    } else {
       setNewLead((prev) => ({
         ...prev,
         interestedIn: {
           ...prev.interestedIn,
-          builder: value,
-          project: "",
-          unit: "",
+          [name]: value,
         },
       }));
-    } catch (err) {
-      console.error("Error fetching projects", err);
     }
-  } else {
-    setNewLead((prev) => ({
-      ...prev,
-      interestedIn: {
-        ...prev.interestedIn,
-        [name]: value,
-      },
-    }));
-  }
-};
-
-
+  };
 
   const [showPopup, setShowPopup] = useState(false);
   const [editingLeadIndex, setEditingLeadIndex] = useState(null);
@@ -142,16 +142,19 @@ const handleInterestedInChange = async (e) => {
     setNewLead((prev) => ({ ...prev, [name]: value }));
   };
 
-  // const handleInterestedInChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setNewLead((prev) => ({
-  //     ...prev,
-  //     interestedIn: {
-  //       ...prev.interestedIn,
-  //       [name]: value || null,
-  //     },
-  //   }));
-  // };
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewLead((prev) => ({
+          ...prev,
+          avatar: reader.result,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleNoteChange = (e) => {
     const note = e.target.value;
@@ -194,7 +197,7 @@ const handleInterestedInChange = async (e) => {
             },
           }
         );
-        
+
         const updatedLeads = leads.map((lead, index) =>
           index === editingLeadIndex ? response.data : lead
         );
@@ -274,6 +277,7 @@ const handleInterestedInChange = async (e) => {
       assignedTo: "",
       notes: [],
       createdAt: "",
+      avatar: "",
     });
   };
 
@@ -338,7 +342,10 @@ const handleInterestedInChange = async (e) => {
       {/* Lead Cards */}
       <div className="grid md:grid-cols-3 gap-4">
         {filteredLeads.map((lead, index) => (
-          <div key={lead._id || index} className="bg-white p-4 rounded-lg shadow relative">
+          <div
+            key={lead._id || index}
+            className="bg-white p-4 rounded-lg shadow relative"
+          >
             <div className="absolute top-3 right-3">
               <button
                 onClick={() =>
@@ -371,7 +378,7 @@ const handleInterestedInChange = async (e) => {
 
             <div className="flex items-center gap-3 mb-2">
               <img
-                src={lead.image || "https://via.placeholder.com/40"}
+                src={lead.avatar || "https://via.placeholder.com/40"}
                 alt={lead.name}
                 className="w-10 h-10 rounded-full object-cover"
               />
@@ -432,6 +439,28 @@ const handleInterestedInChange = async (e) => {
               </button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Avatar Image */}
+              <div className="flex flex-col md:col-span-2">
+                <label className="mb-1 font-medium" htmlFor="avatar">
+                  Avatar Image
+                </label>
+                <div className="flex items-center gap-4">
+                  {/* <img
+                    src={newLead.avatar || "https://via.placeholder.com/100"}
+                    alt="Avatar preview"
+                    className="w-16 h-16 rounded-full object-cover"
+                  /> */}
+                  <input
+                    type="file"
+                    id="avatar"
+                    name="avatar"
+                    accept="image/*"
+                    onChange={handleAvatarChange}
+                    className="border p-2 rounded"
+                  />
+                </div>
+              </div>
+
               {/* Name */}
               <div className="flex flex-col">
                 <label className="mb-1 font-medium" htmlFor="name">
@@ -537,61 +566,68 @@ const handleInterestedInChange = async (e) => {
                 </select>
               </div>
               {/* Interested In - Builder */}
-            {/* Builder Select */}
-<div className="flex flex-col">
-  <label className="mb-1 font-medium" htmlFor="builder">Interested in Builder</label>
-  <select
-    id="builder"
-    name="builder"
-    value={newLead.interestedIn.builder || ""}
-    onChange={handleInterestedInChange}
-    className="border p-2 rounded"
-  >
-    <option value="">Select Builder</option>
-    {builders.map((builder) => (
-      <option key={builder._id} value={builder._id}>{builder.companyName}</option>
-    ))}
-  </select>
-</div>
+              {/* Builder Select */}
+              <div className="flex flex-col">
+                <label className="mb-1 font-medium" htmlFor="builder">
+                  Interested in Builder
+                </label>
+                <select
+                  id="builder"
+                  name="builder"
+                  value={newLead.interestedIn.builder || ""}
+                  onChange={handleInterestedInChange}
+                  className="border p-2 rounded"
+                >
+                  <option value="">Select Builder</option>
+                  {builders.map((builder) => (
+                    <option key={builder._id} value={builder._id}>
+                      {builder.companyName}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-{/* Project Select */}
-<div className="flex flex-col">
-  <label className="mb-1 font-medium" htmlFor="project">Interested in Project</label>
-  <select
-    id="project"
-    name="project"
-    value={newLead.interestedIn.project || ""}
-    onChange={handleInterestedInChange}
-    className="border p-2 rounded"
-  >
-    <option value="">Select Project</option>
-    {projects.map((project) => (
-      <option key={project._id} value={project._id}>{project.projectName}</option>
-    ))}
-  </select>
-</div>
+              {/* Project Select */}
+              <div className="flex flex-col">
+                <label className="mb-1 font-medium" htmlFor="project">
+                  Interested in Project
+                </label>
+                <select
+                  id="project"
+                  name="project"
+                  value={newLead.interestedIn.project || ""}
+                  onChange={handleInterestedInChange}
+                  className="border p-2 rounded"
+                >
+                  <option value="">Select Project</option>
+                  {projects.map((project) => (
+                    <option key={project._id} value={project._id}>
+                      {project.projectName}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-{/* Unit Select */}
-<div className="flex flex-col">
-  <label className="mb-1 font-medium" htmlFor="unit">
-    Interested in Unit
-  </label>
-  <select
-    id="unit"
-    name="unit"
-    value={newLead.interestedIn.unit || ""}
-    onChange={handleInterestedInChange}
-    className="border p-2 rounded"
-  >
-    <option value="">Select Unit</option>
-    {units.map((unit) => (
-      <option key={unit._id} value={unit._id}>
-        {unit.propertyType} - {unit.bhkType}
-      </option>
-    ))}
-  </select>
-</div>
-
+              {/* Unit Select */}
+              <div className="flex flex-col">
+                <label className="mb-1 font-medium" htmlFor="unit">
+                  Interested in Unit
+                </label>
+                <select
+                  id="unit"
+                  name="unit"
+                  value={newLead.interestedIn.unit || ""}
+                  onChange={handleInterestedInChange}
+                  className="border p-2 rounded"
+                >
+                  <option value="">Select Unit</option>
+                  {units.map((unit) => (
+                    <option key={unit._id} value={unit._id}>
+                      {unit.propertyType} - {unit.bhkType}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
               {/* Notes */}
               <div className="flex flex-col">
