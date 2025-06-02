@@ -91,24 +91,54 @@ export default function LoginPage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Handle login submission
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoginErrors({ email: "", password: "" }); // Reset errors
+// Handle login submission
+const handleLogin = async (e) => {
+  e.preventDefault();
+  setLoginErrors({ email: "", password: "" }); // Reset errors
 
-    try {
-      const response = await axios.post(
-        "https://crm-bcgg.onrender.com/api/auth/login",
-        {
-          identifier: loginEmail,
-          password: loginPassword,
-        }
-      );
+  const errors = {};
 
-      const data = response.data;
-      toast.success("Login successful!");
-      sessionStorage.setItem("logindata", JSON.stringify(data));
+  // Client-side email validation
+  if (!loginEmail.trim()) {
+    errors.email = "Email is required";
+  } else if (!/\S+@\S+\.\S+/.test(loginEmail)) {
+    errors.email = "Invalid email format";
+  }
 
+  // Client-side password validation
+  if (!loginPassword) {
+    errors.password = "Password is required";
+  } else if (loginPassword.length < 6) {
+    errors.password = "Password must be at least 6 characters";
+  }
+
+  // If errors exist, set and return early
+  if (Object.keys(errors).length > 0) {
+    setLoginErrors(errors);
+    return;
+  }
+
+  try {
+    const response = await axios.post(
+      "https://crm-bcgg.onrender.com/api/auth/login",
+      {
+        identifier: loginEmail,
+        password: loginPassword,
+      }
+    );
+
+    const data = response.data;
+    toast.success("Login successful!");
+    sessionStorage.setItem("logindata", JSON.stringify(data));
+
+    // Check for redirect path
+    const redirectPath = sessionStorage.getItem("redirectPath");
+    
+    if (redirectPath) {
+      sessionStorage.removeItem("redirectPath");
+      navigate(redirectPath); // Redirect back to the booking page
+    } else {
+      // Default redirect based on role
       if (data.user?.role === "admin") {
         navigate("/admin");
       } else if (data.user?.role === "user") {
@@ -116,26 +146,26 @@ export default function LoginPage() {
       } else if (data.user?.role === "directBuilder") {
         navigate("/properties");
       }
-      
-    } catch (error) {
-      const errorMsg =
-        error.response?.data?.msg || "Login failed. Please try again later.";
-
-      // Map server errors to fields if available
-      if (error.response?.data?.errors) {
-        const serverErrors = error.response.data.errors;
-        setLoginErrors({
-          email: serverErrors.email || serverErrors.username || "",
-          password: serverErrors.password || "",
-        });
-      } else {
-        // For general errors not specific to fields
-        toast.error(errorMsg);
-        setMessage(errorMsg);
-      }
     }
-  };
+  } catch (error) {
+    const errorMsg =
+      error.response?.data?.msg || "Email or password is incorrect.";
 
+    // Field-specific server error
+    if (error.response?.data?.errors) {
+      const serverErrors = error.response.data.errors;
+      setLoginErrors({
+        email: serverErrors.email || serverErrors.username || "",
+        password: serverErrors.password || "",
+      });
+    } else {
+      // General error
+      toast.error(errorMsg);
+      setMessage(errorMsg);
+    }
+  }
+};
+  
   // Client-side validation for signup
   const validateSignupFields = () => {
     let isValid = true;
@@ -256,11 +286,10 @@ export default function LoginPage() {
               <p className="mb-8 text-gray-500">Welcome</p>
 
               <form onSubmit={handleLogin} noValidate>
-                {/* Email Input */}
                 <div className="mb-4">
                   <input
                     type="email"
-                    placeholder="Your email"
+                    placeholder="Your email or username"
                     className={`w-full border ${
                       loginErrors.email ? "border-red-500" : "border-gray-300"
                     } rounded-md p-3`}
@@ -277,7 +306,6 @@ export default function LoginPage() {
                     </p>
                   )}
                 </div>
-
                 {/* Password Input */}
                 <div className="relative mb-2">
                   <input
@@ -290,11 +318,27 @@ export default function LoginPage() {
                     } rounded-md p-3 pr-10`}
                     value={loginPassword}
                     onChange={(e) => {
-                      setLoginPassword(e.target.value);
-                      setLoginErrors({ ...loginErrors, password: "" });
+                      const value = e.target.value;
+                      setLoginPassword(value);
+
+                      // Show password length error as user types
+                      if (value.length > 0 && value.length < 6) {
+                        setLoginErrors((prev) => ({
+                          ...prev,
+                          password: "Password must be at least 6 characters",
+                        }));
+                      } else {
+                        setLoginErrors((prev) => ({ ...prev, password: "" }));
+                      }
                     }}
                     required
                   />
+                  {loginErrors.password && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {loginErrors.password}
+                    </p>
+                  )}
+
                   <button
                     type="button"
                     onClick={() => setShowLoginPassword(!showLoginPassword)}
@@ -306,20 +350,13 @@ export default function LoginPage() {
                       <Eye size={20} />
                     )}
                   </button>
-                  {loginErrors.password && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {loginErrors.password}
-                    </p>
-                  )}
                 </div>
-
                 {/* Forgot Password */}
                 <div className="text-right text-sm mb-6">
                   <a href="#" className="text-blue-500 hover:underline">
                     Forgot password?
                   </a>
                 </div>
-
                 {/* Submit Button */}
                 <button
                   type="submit"

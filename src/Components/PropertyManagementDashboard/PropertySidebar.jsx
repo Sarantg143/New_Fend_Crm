@@ -18,6 +18,9 @@ const PropertySidebar = () => {
 
   const handleLogout = () => {
     // Any logout logic if needed (e.g., clearing localStorage) can be added here
+    sessionStorage.clear();
+
+    localStorage.clear();
     navigate("/login");
   };
 

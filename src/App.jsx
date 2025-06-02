@@ -109,8 +109,14 @@ import AddFloor from "./Components/AdminDashboard/AddFloor";
 import AddProject from "./Components/AdminDashboard/AddProject";
 import AddUnit from './Components/AdminDashboard/AddUnit';
 // import Popup from "./Components/HomePage/Popup";
-
-
+// import Leadsdeatils from "./Components/AdminDashboard/Leadsdeatils";
+import Leadsdeatils from "./Components/AdminDashboard/Leadsdetails";
+// import Listingpage from "./Components/AdminDashboard/Listingpage";
+import Listingpage from "./Components/AdminDashboard/ListingPage";
+import ContactDetails from "./Components/AdminDashboard/ContactDetails";
+// import Page from "./Components/ClientBookingPage/Page";
+import Payments from "./Components/UserDashboard/Payments";
+import PopperPage from "./Components/ClientBookingPage/PopperPage";
 
 // Builder Inner Page Layout
 function BuilderInnerPage() {
@@ -132,6 +138,8 @@ function ClientBookingPage() {
       {/* <ClientHighlights /> */}
       <MainContent />
       <ClientFooter />
+      {/* <Page/> */}
+      {/* <PopperPage/> */}
     </div>
   );
 }
@@ -235,19 +243,23 @@ function App() {
         <Route path="/booking" element={<BookingPage />} />
         <Route path="/builder" element={<BuilderInnerPage />} />
         <Route path="/clientbooking" element={<ClientBookingPage />} />
+        <Route path="/popperpage" element={<PopperPage />} />
+
         {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/testimonials" element={<Testimonials />} />
         <Route path="/footerproperties" element={<FooterProperties />} />
-        <Route path="/why-us" element={<WhyUs />} />
+        <Route path="/why-us" element={<WhyUs />} />
 
         {/* Admin Layout Route */}
         <Route path="/" element={<AdminLayout />}>
           <Route path="admin" element={<Admin />} /> {/* Dashboard */}
           <Route path="propertiespage" element={<PropertiesPage />} />
           <Route path="leadspage" element={<LeadsPage />} />
+          <Route path="leadsdeatils" element={<Leadsdeatils />} />
           <Route path="agentpage" element={<AgentPage />} />
+          <Route path="listingpage" element={<Listingpage />} />
           <Route path="vendor" element={<Vendor />} />
           <Route path="calendar" element={<Calendar />} />
           <Route path="settings" element={<SettingsPage />} />
@@ -258,11 +270,7 @@ function App() {
           <Route path="/add-unit" element={<AddUnit />} />
           <Route path="/usermanagement" element={<UserManagement />} />
           <Route path="/user-details" element={<UserDetails />} />
-          
-      
-
-      
-
+          <Route path="/contactdeatils" element={<ContactDetails />} />
         </Route>
 
         {/* new */}
@@ -275,9 +283,10 @@ function App() {
           <Route path="userproperties" element={<UserProperties />} />
           <Route path="savedproperties" element={<SavedProperties />} />
           <Route path="clientpage" element={<ClientPage />} />
+          <Route path="payments" element={<Payments />} />
           <Route path="usercalendar" element={<UserCalendar />} />
           <Route path="reports" element={<Reports />} />
-          <Route path="userhelp" element={<UserHelp />} />
+          <Route path="userhelp" element={<UserHelp />} />
         </Route>
 
         {/* propertymanagement */}

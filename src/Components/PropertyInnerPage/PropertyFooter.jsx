@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import footerlogo from "../BuilderInnerPage/Assets/footerlogo.png";
 import facebook from "../BuilderInnerPage/Assets/facebook.png";
 import twitter from "../BuilderInnerPage/Assets/twitter.png";
@@ -9,32 +10,39 @@ import email from "../BuilderInnerPage/Assets/email.png";
 import location from "../BuilderInnerPage/Assets/location.png";
 import footerbackground from "../BuilderInnerPage/Assets/Footer background.png";
 
-const BuilderFooter = () => {
+const Footer = () => {
   return (
-    <div className="bg-black text-white pt-16 pb-8 px-6">
+    <div className="bg-black text-white pt-16 pb-8 px-6 mt-3">
       <div className="max-w-7xl mx-auto">
         <div
           className="relative bg-cover bg-center rounded-lg p-6 md:p-10 flex flex-col items-center text-center text-white bg-opacity-80 transition-transform transform hover:scale-105"
           style={{ backgroundImage: `url(${footerbackground})` }}
         >
           <h2 className="text-2xl md:text-3xl font-bold">
-            LOOKING FOR MORE <br/>PROPERTIES?
+            LOOKING FOR MORE <br />
+            PROPERTIES?
           </h2>
           <p className="mt-2 text-gray-300">
-            Let’s work together! <br/>Drop us a line to see how we can help.
+            Let's work together! <br />
+            Drop us a line to see how we can help.
           </p>
-          <button className="mt-4 px-6 py-2 border border-white rounded-lg hover:bg-white hover:text-black transition duration-300 ease-in-out">
+          <Link
+            to="/contact"
+            className="mt-4 px-6 py-2 border border-white rounded-lg hover:bg-white hover:text-black transition duration-300 ease-in-out"
+          >
             Contact us
-          </button>
+          </Link>
         </div>
 
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 border-t border-gray-700 pt-8 text-center md:text-left">
           <div className="flex flex-col items-center md:items-start">
-            <img
-              src={footerlogo}
-              alt="Footer Logo"
-              className="mx-auto md:mx-0 hover:scale-110 transition duration-300"
-            />
+            <Link to="/">
+              <img
+                src={footerlogo}
+                alt="Footer Logo"
+                className="mx-auto md:mx-0 hover:scale-110 transition duration-300"
+              />
+            </Link>
             <p className="text-gray-400 mt-2">
               Welcome to Asset Build Ventures, a premier real estate and
               construction company based in Chennai.
@@ -55,22 +63,54 @@ const BuilderFooter = () => {
           <div>
             <h4 className="text-xl font-bold">Quick Links</h4>
             <ul className="mt-2 space-y-2 text-gray-400">
-              {[
-                "About Us",
-                "Why Us",
-                "Properties",
-                "Testimonials",
-                "Contact Us",
-              ].map((text, index) => (
-                <li key={index}>
-                  <a
-                    href="#"
-                    className="hover:text-white transition duration-300 ease-in-out"
-                  >
-                    {text}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <Link
+                  to="/"
+                  className="hover:text-white transition duration-300 ease-in-out"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/about"
+                  className="hover:text-white transition duration-300 ease-in-out"
+                >
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/why-us"
+                  className="hover:text-white transition duration-300 ease-in-out"
+                >
+                  Why Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/footerproperties"
+                  className="hover:text-white transition duration-300 ease-in-out"
+                >
+                  Properties
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/testimonials"
+                  className="hover:text-white transition duration-300 ease-in-out"
+                >
+                  Testimonials
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/contact"
+                  className="hover:text-white transition duration-300 ease-in-out"
+                >
+                  Contact Us
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -118,4 +158,4 @@ const BuilderFooter = () => {
   );
 };
 
-export default BuilderFooter;
+export default Footer;

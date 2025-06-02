@@ -1,12 +1,11 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import sidebar1 from "../AdminDashboard/Assets/sidebar1.png";
-import sidebar2 from "../AdminDashboard/Assets/sidebar2.png";
-import sidebar3 from "../AdminDashboard/Assets/sidebar3.png";
-import sidebar4 from "../AdminDashboard/Assets/sidebar4.png";
-import sidebar5 from "../AdminDashboard/Assets/sidebar5.png";
-import sidebar6 from "../AdminDashboard/Assets/sidebar6.png";
+import sidebar1 from "../AdminDashboard/Assets/sidebar1.png"; // Dashboard
+import sidebar2 from "../AdminDashboard/Assets/sidebar2.png"; // Properties
+import sidebar3 from "../AdminDashboard/Assets/sidebar3.png"; // Saved
+import sidebar4 from "../AdminDashboard/Assets/sidebar4.png"; // Payments (reused here)
+import sidebar6 from "../AdminDashboard/Assets/sidebar6.png"; // Calendar
 import setting from "../AdminDashboard/Assets/setting.png";
 import help from "../AdminDashboard/Assets/help.png";
 import logout from "../AdminDashboard/Assets/logout.png";
@@ -18,11 +17,14 @@ const UserSidebar = () => {
 
   const isActive = (path) =>
     location.pathname === path
-      ? "text-blue-500 font-medium"
+      ? "text-blue-500 font-medium bg-blue-100 rounded-lg px-2 py-1"
       : "text-gray-700 hover:text-blue-500";
 
   const handleLogout = () => {
-    // Perform logout actions here (e.g., clearing localStorage/session if needed)
+    // Clear auth data if stored in localStorage/sessionStorage
+    sessionStorage.clear();
+
+    localStorage.clear();
     navigate("/login");
   };
 
@@ -36,99 +38,84 @@ const UserSidebar = () => {
       {/* Navigation Links */}
       <nav className="flex-1">
         <ul className="space-y-6">
-          <Link
-            to="/user"
-            className={`flex items-center cursor-pointer ${isActive(
-              "/dashboard"
-            )}`}
-          >
-            <img src={sidebar1} alt="Dashboard" className="w-5 h-5 mr-3" />
-            Dashboard
-          </Link>
-
-          <Link
-            to="/userproperties"
-            className={`flex items-center cursor-pointer ${isActive(
-              "/userproperties"
-            )}`}
-          >
-            <img className="w-5 h-5 mr-3" src={sidebar2} alt="Properties" />
-            Properties
-          </Link>
-
-          <Link
-            to="/savedproperties"
-            className={`flex items-center cursor-pointer ${isActive(
-              "/savedproperties"
-            )}`}
-          >
-            <img
-              className="w-5 h-5 mr-3"
-              src={sidebar3}
-              alt="Saved properties"
-            />
-            Saved properties
-          </Link>
-
-          {/* <Link
-            to="/reports"
-            className={`flex items-center cursor-pointer ${isActive(
-              "/reports"
-            )}`}
-          >
-            <img className="w-5 h-5 mr-3" src={sidebar4} alt="Reports" />
-            Reports
-          </Link> */}
-
-          {/* <Link
-            to="/clientpage"
-            className={`flex items-center cursor-pointer ${isActive(
-              "/clientpage"
-            )}`}
-          >
-            <img className="w-5 h-5 mr-3" src={sidebar5} alt="Clients" />
-            Clients
-          </Link> */}
-
-          <Link
-            to="/usercalendar"
-            className={`flex items-center cursor-pointer ${isActive(
-              "/usercalendar"
-            )}`}
-          >
-            <img className="w-5 h-5 mr-3" src={sidebar6} alt="Calendar" />
-            Calendar
-          </Link>
+          <li>
+            <Link
+              to="/user"
+              className={`flex items-center ${isActive("/user")}`}
+            >
+              <img src={sidebar1} alt="Dashboard" className="w-5 h-5 mr-3" />
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/userproperties"
+              className={`flex items-center ${isActive("/userproperties")}`}
+            >
+              <img src={sidebar2} alt="Properties" className="w-5 h-5 mr-3" />
+              Properties
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/payments"
+              className={`flex items-center ${isActive("/payments")}`}
+            >
+              <img src={sidebar4} alt="Payments" className="w-5 h-5 mr-3" />
+              Payments
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/savedproperties"
+              className={`flex items-center ${isActive("/savedproperties")}`}
+            >
+              <img
+                src={sidebar3}
+                alt="Saved Properties"
+                className="w-5 h-5 mr-3"
+              />
+              Saved Properties
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/usercalendar"
+              className={`flex items-center ${isActive("/usercalendar")}`}
+            >
+              <img src={sidebar6} alt="Calendar" className="w-5 h-5 mr-3" />
+              Calendar
+            </Link>
+          </li>
         </ul>
       </nav>
 
       {/* Footer Links */}
       <div className="mt-auto space-y-6">
-        <Link
-          to="/settings"
-          className={`flex items-center cursor-pointer ${isActive(
-            "/settings"
-          )}`}
-        >
-          <img className="w-5 h-5 mr-3" src={setting} alt="Settings" />
-          Settings
-        </Link>
-
-        <Link
-          to="/help"
-          className={`flex items-center cursor-pointer ${isActive("/help")}`}
-        >
-          <img className="w-5 h-5 mr-3" src={help} alt="Help" />
-          Help
-        </Link>
-
-        <div
-          onClick={handleLogout}
-          className="flex items-center text-red-500 hover:text-red-700 cursor-pointer"
-        >
-          <img className="w-5 h-5 mr-3" src={logout} alt="Logout" />
-          Logout
-        </div>
+        <li>
+          <Link
+            to="/settings"
+            className={`flex items-center ${isActive("/settings")}`}
+          >
+            <img src={setting} alt="Settings" className="w-5 h-5 mr-3" />
+            Settings
+          </Link>
+        </li>
+        <li>
+          <Link to="/help" className={`flex items-center ${isActive("/help")}`}>
+            <img src={help} alt="Help" className="w-5 h-5 mr-3" />
+            Help
+          </Link>
+        </li>
+        <li>
+          <div
+            onClick={handleLogout}
+            className="flex items-center text-red-500 hover:text-red-700 cursor-pointer"
+          >
+            <img src={logout} alt="Logout" className="w-5 h-5 mr-3" />
+            Logout
+          </div>
+        </li>
       </div>
     </div>
   );
